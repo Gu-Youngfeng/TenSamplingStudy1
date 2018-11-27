@@ -8,6 +8,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <p>DirectivesPerFile 类提供了一些方法来获取指定路径下 C 文件个数，以及 C 文件中包含的配置项个数。</p>
+ * @editor yongfeng
+ * @see#getDirectives
+ * @see#listAllFiles
+ */
 public class DirectivesPerFile {
 
 	public static List<Integer> directivesPerFile = new ArrayList<>();
