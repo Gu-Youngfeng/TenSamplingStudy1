@@ -11,17 +11,25 @@ import java.util.List;
 public class DirectivesPerFile {
 
 	public static List<Integer> directivesPerFile = new ArrayList<>();
-	public static int files = 47;
+	//public static int files = 47; // CHANGE1: 为什么是 47？
+	public static int files = 0;
 	
 	public static void main(String[] args) throws Exception {
-		/*new DirectivesPerFile().listFiles(new File("bugs"));
-		for (Integer i : DirectivesPerFile.directivesPerFile){
+		new DirectivesPerFile().listFiles(new File("bugs"));
+		System.out.println("Files: " + DirectivesPerFile.files); // 打印  bug 文件夹中的 C 文件个数
+		System.out.print("listen.c: " + new DirectivesPerFile().getDirectives(new File("bugs/apache/server/mpm_common.c"))); // 打印 listen.c 文件中的配置项
+		for (Integer i : DirectivesPerFile.directivesPerFile){ // 每个 C 文件中包含的配置项个数
 			System.out.println(i);
-		}*/
-		DirectivesPerFile.listAllFiles(new File("code"));
+		}
+		/*DirectivesPerFile.listAllFiles(new File("code"));
 		System.out.println(DirectivesPerFile.files);
+		*/
 	}
 	
+	/**
+	 * <p>检索 path 路径底下包含的 C 文件个数，并将文件个数添加到 {@link#files} 变量中。</p>
+	 * @param path 文件路径
+	 * */
 	public static void listAllFiles(File path) throws Exception{
 		if (path.isDirectory()){
 			for (File file : path.listFiles()){
@@ -34,6 +42,9 @@ public class DirectivesPerFile {
 		}
 	}
 	
+	/**
+	 * <p>检索 path 路径下包含的 C 文件所包含的配置项个数，并将配置项个数依次添加到 {@link#directivesPerFile} 列表中。</p>
+	 */
 	public void listFiles(File path) throws Exception{
 		if (path.isDirectory()){
 			for (File file : path.listFiles()){
@@ -67,6 +78,11 @@ public class DirectivesPerFile {
 	}
 	
 	// It sets the number of configurations..
+	/**
+	 * <p>挖掘出 C 文件中出现的配置项，注意这里挖掘出的配置项列表与 C 文件对应的 .config 文件有出入。</p>
+	 * @param file 文件路径
+	 * @return 配置项列表
+	 */
 	public List<String> getDirectives(File file) throws Exception{
 		List<String> directives = new ArrayList<>();
 		
@@ -79,11 +95,12 @@ public class DirectivesPerFile {
 			
 			strLine = strLine.trim();
 			
-			if (strLine.startsWith("#")){
+			if (strLine.startsWith("#")){ // 替换掉 # 后面的空格和跳格
 				strLine = strLine.replaceAll("#(\\s)+", "#");
 				strLine = strLine.replaceAll("#(\\t)+", "#");
 			}
 			
+			//
 			if (strLine.trim().startsWith("#if") || strLine.trim().startsWith("#elif")){
 				
 				strLine = strLine.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)","");
@@ -106,7 +123,7 @@ public class DirectivesPerFile {
 				strLine = strLine.replaceAll("#(\\t)+", "#");
 				if (strLine.startsWith("#define")){
 					String[] parts = strLine.split(" ");
-					if (parts.length == 3){
+					if (parts.length == 3){ // #define 后面接 2 个参数，才会将第 1 个参数给去掉
 						parts[1] = parts[1].trim();
 						directives.remove(parts[1]);
 					}
