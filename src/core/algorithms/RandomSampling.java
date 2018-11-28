@@ -25,7 +25,7 @@ public class RandomSampling extends SamplingAlgorithm {
 		directives = this.getDirectives(file);
 
 		if (directives.size() > 0
-//				&& NUMBER代抽样算法必须实现的方法_CONFIGS < Math.pow(directives.size(), 2)) { // BUG1: this line should be Math.pow(2, directives.size())
+//				&& NUMBER_CONFIGS < Math.pow(directives.size(), 2)) { // BUG1: this line should be Math.pow(2, directives.size())
 				&& NUMBER_CONFIGS < Math.pow(2, directives.size())) {
 
 			for (int j = 0; j < RandomSampling.NUMBER_CONFIGS; j++) {
