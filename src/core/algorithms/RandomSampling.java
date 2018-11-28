@@ -10,7 +10,6 @@ import core.SamplingAlgorithm;
 /**
  * <p><b>RandomSampling 随机采样</b> 方法随机从某个 C 文件中抽取一定数量的配置，是一种较稳定的基线方法。  </p>
  * @editor yongfeng
- *
  */
 public class RandomSampling extends SamplingAlgorithm {
 	/** 采样个数 */
