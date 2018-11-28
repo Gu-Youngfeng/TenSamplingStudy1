@@ -8,10 +8,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <p>SamplingAlgorithm 是一个抽象类，它提供了获取文件配置项的方法 {@link#getDirectives}，和计算集合幂集的方法 {@link#powerSet}。</p>
+ * @editor yongfeng
+ * @see#getDirectives
+ * @see#powerSet
+ */
 public abstract class SamplingAlgorithm {
 
 	protected List<String> directives;
-	
+	/** 子代抽样算法必须实现的方法  */
 	public abstract List<List<String>> getSamples(File file) throws Exception;
 	
 	public boolean isValidJavaIdentifier(String s) {
@@ -35,6 +41,11 @@ public abstract class SamplingAlgorithm {
 	}
 	
 	// It sets the number of configurations..
+	/**
+	 * <p>挖掘出 C 文件中出现的配置项，注意这里挖掘出的配置项列表与 C 文件对应的 .config 文件有出入。</p>
+	 * @param file 文件路径
+	 * @return 配置项列表
+	 */
 	public List<String> getDirectives(File file) throws Exception{
 		List<String> directives = new ArrayList<>();
 		
@@ -90,6 +101,12 @@ public abstract class SamplingAlgorithm {
 		return directives;
 	}
 	
+	/**
+	 * <p>获得 originalSet 集合的幂集，即所有子集的集合。ps: 这个幂集的查找方法效率不高，不推荐。</p>
+	 * @param <T>
+	 * @param originalSet 集合
+	 * @return 集合的幂集
+	 */
 	public <T> List<List<T>> powerSet(List<T> originalSet) {
 		List<List<T>> sets = new ArrayList<List<T>>();
 		if (originalSet.isEmpty()) {
@@ -97,7 +114,7 @@ public abstract class SamplingAlgorithm {
 			return sets;
 		}
 		List<T> list = new ArrayList<T>(originalSet);
-		T head = list.get(0);
+		T head = list.get(0); // originalSet 第一个元素
 		List<T> rest = new ArrayList<T>(list.subList(1, list.size()));
 		for (List<T> set : powerSet(rest)) {
 			List<T> newSet = new ArrayList<T>();
